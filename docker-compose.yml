@@ -1,0 +1,20 @@
+version: '2.4'
+
+services:
+  videostore-database:
+    image: postgres:11.5
+    ports:
+      - "3259:5432"
+    command: postgres -c fsync=off
+    environment:
+      - POSTGRES_DB=video_store
+      - POSTGRES_USER=vs
+      - POSTGRES_PASSWORD=vs
+
+  rabbitmq:
+    image: 'rabbitmq:management'
+    mem_limit: 200M
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+

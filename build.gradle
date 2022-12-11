@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.0'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'org.videostore'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+version = System.getenv('VERSION') ?: 'local'
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('testcontainersVersion', "1.17.6")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.liquibase:liquibase-core'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.7.1'
+
+
+	annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly group: 'com.h2database', name: 'h2'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
+	compileOnly group: 'org.projectlombok', name: 'lombok'
+	testCompileOnly group: 'org.projectlombok', name: 'lombok'
+	annotationProcessor group: 'org.projectlombok', name: 'lombok'
+	testAnnotationProcessor group: 'org.projectlombok', name: 'lombok'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
+}
+
+defaultTasks 'clean', 'classes', 'testClasses', 'check', 'assemble'
+
+tasks.withType(Test) {
+	useJUnitPlatform()
+	testLogging {
+		events = ['passed', 'skipped', 'failed']
+		showExceptions = true
+		exceptionFormat = 'full'
+		showCauses = true
+		showStackTraces = true
+	}
+}
+bootJar {
+	archiveName 'video-store-service.jar'
+}

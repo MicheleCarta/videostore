@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:academy;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database: H2
+    hibernate:
+      ddl-auto: create-drop
+
+  rabbitmq:
+    listener.simple.auto-startup: false
