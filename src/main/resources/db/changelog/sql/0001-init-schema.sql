@@ -18,7 +18,9 @@ create table if not exists directors
     id      bigint primary key,
     name varchar(500),
     surname varchar(500),
-    b_day   timestamp
+    b_day   timestamp,
+    created_at timestamp not null,
+    updated_at timestamp
 );
 
 create table if not exists movies_directors

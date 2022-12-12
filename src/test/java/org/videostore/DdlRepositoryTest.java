@@ -9,6 +9,7 @@ import org.videostore.repository.DirectorRepository;
 import org.videostore.repository.MovieRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -45,6 +46,41 @@ public class DdlRepositoryTest extends DataTest {
         Directors director = directorRepository.getReferenceById(directors.getId());
         assertEquals(director.getId(),
                 movie.getDirectors().get(0).getId());
+    }
+
+    @Test
+    void getMovieByDirector() {
+
+        Movie movie = movieRepository.saveAndFlush(buildMovie());
+        Directors directors = directorRepository.saveAndFlush(buildDirector(null));
+        assertEquals(directors.getMovies(), null);
+        movie.setDirectors(new ArrayList<>() {{
+            add(directors);
+        }});
+        movieRepository.save(movie);
+        Directors director = directorRepository.getReferenceById(directors.getId());
+        assertEquals(director.getId(),
+                movie.getDirectors().get(0).getId());
+        List<Movie> movies = movieRepository.getMoviesByDirector(directors.getId());
+        assertEquals(movies.size(), 1);
+    }
+
+    @Test
+    void updateRating() {
+
+        Movie movie = movieRepository.saveAndFlush(buildMovie());
+        Directors directors = directorRepository.saveAndFlush(buildDirector(null));
+        assertEquals(directors.getMovies(), null);
+        movie.setDirectors(new ArrayList<>() {{
+            add(directors);
+        }});
+        movieRepository.save(movie);
+        Directors director = directorRepository.getReferenceById(directors.getId());
+        assertEquals(director.getId(),
+                movie.getDirectors().get(0).getId());
+        movie.setRating(5.5);
+        Movie movieUpdated = movieRepository.saveAndFlush(movie);
+        assertEquals(movieUpdated.getRating(), 5.5);
     }
 
 

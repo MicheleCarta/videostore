@@ -1,11 +1,16 @@
 package org.videostore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,12 +35,13 @@ public class Directors {
     private Instant createdAt;
     @Column(name = "updated_at")
     private Instant updatedAt;
-    @ManyToMany(fetch = FetchType.EAGER,
+    @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             },
             mappedBy = "directors")
-    private List<Movie> movies = new ArrayList<>();
+    @JsonIgnore
+    private List<Movie> movies;
 
 }

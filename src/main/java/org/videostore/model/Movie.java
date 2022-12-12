@@ -1,12 +1,15 @@
 package org.videostore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -26,7 +29,7 @@ public class Movie {
     @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "category", nullable = false)
-    private Category category;
+    private String category;
     @Column(name = "year_production", nullable = false)
     private Integer yearProduction;
     @Column(name = "year_released")
@@ -47,7 +50,8 @@ public class Movie {
                     CascadeType.MERGE
             })
     @JoinTable(name = "movies_directors",
-            joinColumns = { @JoinColumn(name = "movie_id") },
-            inverseJoinColumns = { @JoinColumn(name = "director_id") })
-    private List<Directors> directors = new ArrayList<>();
+            joinColumns = {@JoinColumn(name = "movie_id")},
+            inverseJoinColumns = {@JoinColumn(name = "director_id")})
+    @JsonIgnore
+    private List<Directors> directors;
 }

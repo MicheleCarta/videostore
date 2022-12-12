@@ -3,6 +3,7 @@ package org.videostore;
 import org.videostore.model.Category;
 import org.videostore.model.Directors;
 import org.videostore.model.Movie;
+import org.videostore.model.dto.MovieRequest;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class DataTest {
             add("Actor y");
             add("Actor z");
         }};
-        return Movie.builder().title("some title").category(Category.Action).description("long description").rating(3.5).yearProduction(2022).
+        return Movie.builder().title("some title").category(Category.Action.name()).description("long description").rating(3.5).yearProduction(2022).
                 createdAt(Instant.now()).
                 casting(actors.stream()
                         .map(n -> String.valueOf(n))
@@ -38,91 +39,18 @@ public class DataTest {
                 .movies(movies).build();
     }
 
+    public static MovieRequest buildMoviePost(){
+        List<String> actors = new ArrayList<>() {{
+            add("Actor x");
+            add("Actor y");
+            add("Actor z");
+        }};
+        return MovieRequest.builder().title("some title").category(Category.Action.name()).description("long description").rating(3.5).yearProduction(2022).
+                casting(actors.stream()
+                        .map(n -> String.valueOf(n))
+                        .collect(Collectors.joining("-", "{", "}"))).
 
-    private static final String DEFAULT_LAST_SEEN = "2021-01-02T12:34:56Z";
-    public static final String preferencesDefault = """
-            {
-               "preferences": {
-               "lastSeenNotification": "%s",
-               "theme": "default", 
-                 "communications": {
-                   "account": {
-                     "sms": true,
-                     "email": true
-                   },
-                   "trading": {
-                     "sms": true,
-                     "email": true
-                   },
-                   "weekAhead": {
-                     "sms": true,
-                     "email": true
-                   },
-                   "promotions": {
-                     "sms": true,
-                     "email": true
-                   }
-                 }
-               }
-             }""".formatted(DEFAULT_LAST_SEEN);
+                build();
+    }
 
-    public static final String preferencesValidate = """
-            {
-              "lastSeenNotification" : "%s",
-              "theme" : "default",
-              "communications" : {
-                "account" : {
-                  "sms" : true,
-                  "email" : true
-                },
-                "trading" : {
-                  "sms" : true,
-                  "email" : true
-                },
-                "weekAhead" : {
-                  "sms" : true,
-                  "email" : true
-                },
-                "promotions" : {
-                  "sms" : true,
-                  "email" : true
-                }
-              }
-            }""".formatted(DEFAULT_LAST_SEEN);
-    ;
-    public static final String preferencesUpdated = """
-            {
-              "theme": "light",
-              "lastSeenNotification": "%s",
-              "communications": {
-                "promotions": {
-                  "sms": false,
-                  "email": false
-                }
-              }
-            }""".formatted(DEFAULT_LAST_SEEN);
-    ;
-    public static final String expectedPreferencesMerged = """
-            {
-              "lastSeenNotification" : "%s",
-              "theme" : "light",
-              "communications" : {
-                "account" : {
-                  "sms" : true,
-                  "email" : true
-                },
-                "trading" : {
-                  "sms" : true,
-                  "email" : true
-                },
-                "weekAhead" : {
-                  "sms" : true,
-                  "email" : true
-                },
-                "promotions" : {
-                  "sms" : false,
-                  "email" : false
-                }
-              }
-            }""".formatted(DEFAULT_LAST_SEEN);
 }

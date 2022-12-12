@@ -1,32 +1,5 @@
 server.port: 3000
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,env,loggers
-  endpoint:
-    health:
-      show-details: always
-    metrics:
-      enabled: true
-  metrics:
-    enable:
-      all: false
-      spring.component.calls: true
-      http: true
-      rabbitmq: true
-    distribution:
-      percentiles-histogram:
-        all: false
-      percentiles:
-        all:
-    export:
-      datadog:
-        enabled: ${DATADOG_ENABLED:false}
-        host-tag: host
-        api-key: ${DATADOG_API_KEY:KEY123}
-
 spring:
   application:
     name: video-store-service
@@ -65,16 +38,14 @@ spring:
     init:
       platform: postgres
 
-
-metrics:
-  hostname: ${HOSTNAME:localhost}
-  environment-id: ${METRICS_ENV:local}
-  allowed-class-tags:
-  empty-class-tag-allowed: true
-
 logging:
   traceable:
     http.mdc-cleaner-disabled: true
   level:
     "org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler": warn
 
+swagger:
+  package-scan: org.videostore.controller
+  title: API
+  description: Doc API
+  version: 1.0-SNAPSHOT

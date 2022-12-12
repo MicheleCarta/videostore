@@ -41,3 +41,46 @@ are mounted in to the docker-compose stack.
 ```
 </details>
 
+
+
+### Manual
+
+* Add Movie
+
+```yaml
+  POST: /v1/movie/
+  { 
+  "title":"some title new2",  
+  "description":"desc movie bla bla bla",
+  "category": "Fantasy",
+  "yearProduction":"2021",
+  "yearReleased":"2022",
+  "monthReleased":"5",
+  "casting":"Tom,Jerry, willie, minnie",
+  "rating": 0,
+  "directors":[3,5]
+}
+```
+
+* Add Director
+
+```yaml
+  POST: /v1/movie/
+  {
+    "name": "Stephen",
+    "surname": "Spielberg",
+    "bDay": "1950-01-02T12:34:56Z"
+  }
+```
+
+* Add Director
+
+```yaml
+  POST: /v1/movie/
+  {
+    "name": "Stephen",
+    "surname": "Spielberg",
+    "bDay": "1950-01-02T12:34:56Z"
+  }
+```
+
